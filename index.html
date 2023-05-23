@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>PNG to JPG Converter Tool</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <style>
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .header {
+            font-size: 36px;
+            margin-top: 50px;
+        }
+
+        .subtitle {
+            font-size: 24px;
+            margin-top: 30px;
+        }
+
+        .file-input {
+            display: block;
+            margin: 0 auto;
+            margin-top: 30px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .convert-button {
+            display: block;
+            margin: 0 auto;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .convert-button:hover {
+            background-color: #0062cc;
+        }
+
+        .result-container {
+            margin-top: 30px;
+        }
+
+        .download-button {
+            display: block;
+            margin: 0 auto;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .download-button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="header">PNG to JPG Converter Tool</h1>
+        <p class="subtitle">Select a PNG image to convert:</p>
+        <input type="file" id="fileInput" class="file-input">
+        <button onclick="convertToJPG()" class="convert-button">Convert to JPG</button>
+        <div id="result" class="result-container"></div>
+        <a id="downloadButton" download class="download-button">Download JPG</a>
+    </div>
+    <!-- <script src="script.js"></script> -->
+    <script>
+        function convertToJPG() {
+            const fileInput = document.getElementById("fileInput");
+            const result = document.getElementById("result");
+            const downloadButton = document.getElementById("downloadButton");
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.readAsDataURL(file);
+            reader.onload = function (event) {
+                const img = new Image();
+                img.src = event.target.result;
+                img.onload = function () {
+                    const canvas = document.createElement("canvas");
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    const ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0);
+                    const dataURL = canvas.toDataURL("image/jpeg");
+                    result.innerHTML = `<img src="${dataURL}" alt="Converted Image">`;
+                    downloadButton.href = dataURL;
+                };
+            };
+        }
+
+    </script>
+</body>
+
+</html>
